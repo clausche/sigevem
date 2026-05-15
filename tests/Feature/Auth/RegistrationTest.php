@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Department;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,9 +19,15 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
+        $department = Department::create([
+            'name' => 'Dirección de Operaciones',
+            'code' => 'OPER',
+        ]);
+
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'department_id' => $department->id,
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);

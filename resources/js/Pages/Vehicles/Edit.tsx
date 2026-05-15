@@ -5,6 +5,7 @@ import type { PageProps as AppPageProps } from '@/types';
 
 interface Vehicle {
     id: number;
+    mobile_code: string | null;
     plate: string;
     brand: string;
     model: string;
@@ -13,6 +14,8 @@ interface Vehicle {
     status: string;
     current_km: number;
     department_id: number | null;
+    assigned_driver_id: number | null;
+    parking_location: string | null;
 }
 
 interface Department {
@@ -20,14 +23,21 @@ interface Department {
     name: string;
 }
 
+interface Driver {
+    id: number;
+    name: string;
+}
+
 interface PageProps extends AppPageProps {
     vehicle: Vehicle;
     departments: Department[];
+    drivers: Driver[];
 }
 
 export default function Edit() {
-    const { vehicle, departments } = usePage<PageProps>().props;
+    const { vehicle, departments, drivers } = usePage<PageProps>().props;
     const { data, setData, put, processing, errors } = useForm({
+        mobile_code: vehicle.mobile_code || '',
         plate: vehicle.plate,
         brand: vehicle.brand,
         model: vehicle.model,
@@ -36,6 +46,8 @@ export default function Edit() {
         status: vehicle.status,
         current_km: vehicle.current_km,
         department_id: vehicle.department_id || '',
+        assigned_driver_id: vehicle.assigned_driver_id || '',
+        parking_location: vehicle.parking_location || '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -52,6 +64,17 @@ export default function Edit() {
                 <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Móvil</label>
+                                <input
+                                    type="text"
+                                    value={data.mobile_code}
+                                    onChange={e => setData('mobile_code', e.target.value.toUpperCase())}
+                                    placeholder="M-05"
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                />
+                                {errors.mobile_code && <div className="text-red-500 text-xs mt-1">{errors.mobile_code}</div>}
+                            </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Patente</label>
                                 <input
@@ -139,6 +162,30 @@ export default function Edit() {
                                     ))}
                                 </select>
                                 {errors.department_id && <div className="text-red-500 text-xs mt-1">{errors.department_id}</div>}
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Conductor Asignado</label>
+                                <select
+                                    value={data.assigned_driver_id}
+                                    onChange={e => setData('assigned_driver_id', e.target.value)}
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                >
+                                    <option value="">Sin conductor asignado</option>
+                                    {drivers.map(driver => (
+                                        <option key={driver.id} value={driver.id}>{driver.name}</option>
+                                    ))}
+                                </select>
+                                {errors.assigned_driver_id && <div className="text-red-500 text-xs mt-1">{errors.assigned_driver_id}</div>}
+                            </div>
+                            <div className="md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700">Estacionamiento</label>
+                                <input
+                                    type="text"
+                                    value={data.parking_location}
+                                    onChange={e => setData('parking_location', e.target.value)}
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                />
+                                {errors.parking_location && <div className="text-red-500 text-xs mt-1">{errors.parking_location}</div>}
                             </div>
                             <div className="md:col-span-2 flex justify-end">
                                 <button

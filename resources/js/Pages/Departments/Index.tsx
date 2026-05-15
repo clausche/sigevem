@@ -15,7 +15,7 @@ interface PageProps extends AppPageProps {
         data: Department[];
         links: any;
     };
-    flash: {
+    flash?: {
         message: string | null;
     };
 }
@@ -41,37 +41,46 @@ export default function Index() {
                             </Link>
                         </div>
 
-                        {flash.message && (
+                        {flash?.message && (
                             <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-md">
                                 {flash.message}
                             </div>
                         )}
 
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead>
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {departments.data.map((dept) => (
-                                    <tr key={dept.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{dept.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{dept.code || 'N/A'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <Link
-                                                href={route('departments.edit', dept.id)}
-                                                className="text-indigo-600 hover:text-indigo-900 mr-4"
-                                            >
-                                                Editar
-                                            </Link>
-                                        </td>
+                        {departments.data.length > 0 ? (
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead>
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
+                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {departments.data.map((dept) => (
+                                        <tr key={dept.id}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{dept.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{dept.code || 'N/A'}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <Link
+                                                    href={route('departments.edit', dept.id)}
+                                                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                                                >
+                                                    Editar
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <div className="rounded-md border border-dashed border-gray-300 px-6 py-10 text-center">
+                                <h4 className="text-base font-medium text-gray-900">No hay departamentos registrados</h4>
+                                <p className="mt-2 text-sm text-gray-500">
+                                    Crea las unidades municipales que podrán solicitar o administrar vehículos.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

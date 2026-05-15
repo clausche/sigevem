@@ -2,11 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
-    protected $fillable = ['plate', 'brand', 'model', 'year', 'type', 'status', 'current_km', 'department_id'];
+    use HasFactory;
+
+    protected $fillable = [
+        'mobile_code',
+        'plate',
+        'brand',
+        'model',
+        'year',
+        'type',
+        'status',
+        'current_km',
+        'department_id',
+        'assigned_driver_id',
+        'parking_location',
+    ];
 
     protected function casts(): array
     {
@@ -14,12 +29,18 @@ class Vehicle extends Model
             'year' => 'integer',
             'current_km' => 'integer',
             'department_id' => 'integer',
+            'assigned_driver_id' => 'integer',
         ];
     }
 
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function assignedDriver()
+    {
+        return $this->belongsTo(User::class, 'assigned_driver_id');
     }
 
     public function documents()

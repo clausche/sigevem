@@ -5,6 +5,7 @@ import type { PageProps as AppPageProps } from '@/types';
 
 interface Vehicle {
     id: number;
+    mobile_code: string | null;
     plate: string;
     brand: string;
     model: string;
@@ -16,6 +17,10 @@ interface Vehicle {
     department?: {
         name: string;
     };
+    assigned_driver?: {
+        name: string;
+    };
+    parking_location: string | null;
 }
 
 interface PageProps extends AppPageProps {
@@ -59,8 +64,10 @@ export default function Index() {
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patente</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Móvil</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marca/Modelo</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unidad</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conductor</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Km Actual</th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
@@ -70,8 +77,10 @@ export default function Index() {
                                 {vehicles.data.map((vehicle) => (
                                     <tr key={vehicle.id}>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{vehicle.plate}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{vehicle.mobile_code || 'S/C'}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.brand} {vehicle.model} ({vehicle.year})</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.department?.name || 'Sin asignar'}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{vehicle.assigned_driver?.name || 'Sin asignar'}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                                             <span className={`px-2 py-1 rounded-full text-xs ${
                                                 vehicle.status === 'available' ? 'bg-green-100 text-green-800' :

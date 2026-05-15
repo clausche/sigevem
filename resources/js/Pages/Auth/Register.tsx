@@ -3,13 +3,25 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import type { PageProps as AppPageProps } from '@/types';
 import { FormEventHandler } from 'react';
 
+interface Department {
+    id: number;
+    name: string;
+}
+
+interface PageProps extends AppPageProps {
+    departments: Department[];
+}
+
 export default function Register() {
+    const { departments } = usePage<PageProps>().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        department_id: '',
         password: '',
         password_confirmation: '',
     });
@@ -59,6 +71,28 @@ export default function Register() {
                     />
 
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="department_id" value="Departamento o unidad" />
+
+                    <select
+                        id="department_id"
+                        name="department_id"
+                        value={data.department_id}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        onChange={(e) => setData('department_id', e.target.value)}
+                        required
+                    >
+                        <option value="">Seleccione departamento o unidad</option>
+                        {departments.map((department) => (
+                            <option key={department.id} value={department.id}>
+                                {department.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    <InputError message={errors.department_id} className="mt-2" />
                 </div>
 
                 <div className="mt-4">

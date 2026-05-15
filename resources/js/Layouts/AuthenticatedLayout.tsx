@@ -34,6 +34,36 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('vehicles.index')}
+                                    active={route().current('vehicles.*')}
+                                >
+                                    Vehículos
+                                </NavLink>
+                                <NavLink
+                                    href={route('requests.index')}
+                                    active={route().current('requests.*')}
+                                >
+                                    Solicitudes
+                                </NavLink>
+                                <NavLink
+                                    href={route('maintenances.index')}
+                                    active={route().current('maintenances.*')}
+                                >
+                                    Mantenimiento
+                                </NavLink>
+                                <NavLink
+                                    href={route('documents.index')}
+                                    active={route().current('documents.*')}
+                                >
+                                    Documentos
+                                </NavLink>
+                                <NavLink
+                                    href={route('departments.index')}
+                                    active={route().current('departments.*')}
+                                >
+                                    Departamentos
+                                </NavLink>
                             </div>
                         </div>
 
@@ -137,6 +167,36 @@ export default function Authenticated({
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('vehicles.index')}
+                            active={route().current('vehicles.*')}
+                        >
+                            Vehículos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('requests.index')}
+                            active={route().current('requests.*')}
+                        >
+                            Solicitudes
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('maintenances.index')}
+                            active={route().current('maintenances.*')}
+                        >
+                            Mantenimiento
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('documents.index')}
+                            active={route().current('documents.*')}
+                        >
+                            Documentos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('departments.index')}
+                            active={route().current('departments.*')}
+                        >
+                            Departamentos
                         </ResponsiveNavLink>
                     </div>
 

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VehicleRequest;
-use App\Models\Vehicle;
+use App\Models\Assignment;
 use App\Models\User;
-use App\Models\Department;
+use App\Models\Vehicle;
+use App\Models\VehicleRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use Carbon\Carbon;
 
 class VehicleRequestController extends Controller
 {
@@ -43,6 +43,7 @@ class VehicleRequestController extends Controller
 
             $request->sla_status = $status;
             $request->deadline = $deadline->format('Y-m-d H:i');
+
             return $request;
         });
 
@@ -53,25 +54,33 @@ class VehicleRequestController extends Controller
 
     public function create(): Response
     {
+        $user = Auth::user()->load('department');
+
         return Inertia::render('Requests/Create', [
-            'departments' => Department::orderBy('name')->get(['id', 'name']),
+            'department' => $user->department,
         ]);
     }
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        if (! $user->department_id) {
+            return back()->withErrors([
+                'department_id' => 'Debes estar adscrito a un departamento para solicitar un vehículo.',
+            ]);
+        }
+
         $validated = $request->validate([
-            'department_id' => 'required|exists:departments,id',
             'reason' => 'required|string',
             'destination' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
         ]);
 
-        $user = Auth::user();
-
         VehicleRequest::create(array_merge($validated, [
             'user_id' => $user->id,
+            'department_id' => $user->department_id,
             'status' => 'pending',
         ]));
 
@@ -100,7 +109,7 @@ class VehicleRequestController extends Controller
         ]);
 
         // Create assignment
-        \App\Models\Assignment::create([
+        Assignment::create([
             'request_id' => $vehicleRequest->id,
             'vehicle_id' => $vehicle->id,
             'driver_id' => $validated['driver_id'],

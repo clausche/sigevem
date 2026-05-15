@@ -4,6 +4,7 @@ export interface User {
     email: string;
     email_verified_at?: string;
     role?: string;
+    department_id?: number | null;
 }
 
 export type PageProps<
