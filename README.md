@@ -1,58 +1,149 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SIGEVEM
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de Gestión Vehicular Municipal para la Ilustre Municipalidad de Puerto Montt.
 
-## About Laravel
+SIGEVEM centraliza el inventario de vehículos municipales, solicitudes de uso, asignaciones, conductores, documentos, mantenciones, bitácoras y reportes operativos de la flota.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Estado Actual
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+El sistema incluye:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Panel de control con indicadores de flota, solicitudes, documentos y mantenciones.
+- Portada institucional para acceso al sistema.
+- Inventario de vehículos municipales.
+- Registro de solicitudes por unidad municipal.
+- Asignación de vehículo y conductor.
+- Gestión de mantenciones.
+- Gestión de documentos vehiculares.
+- Departamentos/unidades municipales cargadas desde `database/data`.
+- Administración de usuarios y roles.
+- Exportación del resumen del panel a PDF.
 
-## Learning Laravel
+## Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Laravel 13
+- PHP 8.3+
+- MySQL
+- Inertia 2
+- React 18
+- TypeScript
+- Tailwind CSS
+- Vite 8
+- Dompdf
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requisitos Técnicos
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- PHP 8.3 o superior
+- Composer
+- MySQL 8 o compatible
+- Node.js 20.19 o superior
+- npm
 
-## Agentic Development
+> Nota: Vite 8 requiere Node `20.19+` o `22.12+`. Con Node `20.17` el build falla.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Instalación Local
+
+Configurar el entorno local según `.env.example`, crear la base MySQL correspondiente y ejecutar:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+npm install --legacy-peer-deps
+npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Servidor local:
 
-## Contributing
+```bash
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Usuario Inicial
 
-## Code of Conduct
+El seeder crea un usuario administrador de desarrollo. Revisar `DatabaseSeeder` antes de usar en ambientes compartidos o productivos.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Desde el módulo `Usuarios`, un administrador puede asignar:
 
-## Security Vulnerabilities
+- `Solicitante`
+- `Encargado de flota`
+- `Administrador`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Unidades Municipales
 
-## License
+Las unidades se cargan desde:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```text
+database/data/organigrama_municipalidad_puerto_montt_105_unidades.csv
+```
+
+Para recargar solo unidades:
+
+```bash
+php artisan db:seed --class=DepartmentsSeeder
+```
+
+## Comandos Útiles
+
+Ejecutar tests:
+
+```bash
+php artisan test
+```
+
+Compilar frontend:
+
+```bash
+npm run build
+```
+
+Modo desarrollo frontend:
+
+```bash
+npm run dev
+```
+
+Limpiar cachés Laravel:
+
+```bash
+php artisan optimize:clear
+```
+
+## Exportación PDF
+
+Desde el dashboard, el botón `Exportar resumen` genera un PDF con estilo visual del panel de control.
+
+Ruta:
+
+```text
+GET /dashboard/export-summary
+```
+
+El PDF incluye:
+
+- KPIs de flota.
+- Estado operativo de vehículos.
+- Móvil destacado.
+- Últimas solicitudes.
+- Actividad reciente.
+- Documentación vehicular.
+- Mantenciones/servicios registrados.
+
+## Notas de Desarrollo
+
+- La tabla de solicitudes se llama `requests`; el modelo `VehicleRequest` define explícitamente esa tabla.
+- Las páginas autenticadas usan un sidebar persistente desde `AuthenticatedLayout`.
+- El dashboard tiene un layout propio inspirado en el diseño de referencia del panel.
+- Algunos indicadores del dashboard son visuales/operativos y deberán conectarse progresivamente a datos reales más específicos.
+
+## Validación Recomendada Antes de Publicar
+
+```bash
+npm run build
+php artisan test
+```
+
+## Licencia
+
+Proyecto interno para gestión vehicular municipal.

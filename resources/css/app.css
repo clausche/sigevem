@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sigevem-shell main > .py-12 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.sigevem-shell main > .py-12 > .max-w-7xl {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+    .sigevem-shell main > .py-12 > .max-w-7xl {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}

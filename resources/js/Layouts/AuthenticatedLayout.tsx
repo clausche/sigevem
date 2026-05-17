@@ -1,256 +1,179 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { User } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
+
+interface MenuItem {
+    label: string;
+    route: string;
+    active: string;
+    count: string | null;
+    adminOnly?: boolean;
+}
+
+const menuSections: { label: string; items: MenuItem[] }[] = [
+    {
+        label: 'Panel',
+        items: [
+            { label: 'Inicio', route: 'dashboard', active: 'dashboard', count: null },
+        ],
+    },
+    {
+        label: 'Flota',
+        items: [
+            { label: 'Vehiculos', route: 'vehicles.index', active: 'vehicles.*', count: '101' },
+            { label: 'Mantenciones', route: 'maintenances.index', active: 'maintenances.*', count: '11' },
+            { label: 'Documentos', route: 'documents.index', active: 'documents.*', count: '7' },
+            { label: 'Bitacoras', route: 'trip-logs.index', active: 'trip-logs.*', count: null },
+        ],
+    },
+    {
+        label: 'Operacion',
+        items: [
+            { label: 'Solicitudes', route: 'requests.index', active: 'requests.*', count: '14' },
+            { label: 'Asignaciones', route: 'assignments.index', active: 'assignments.*', count: null },
+        ],
+    },
+    {
+        label: 'Organizacion',
+        items: [
+            { label: 'Departamentos', route: 'departments.index', active: 'departments.*', count: '105' },
+            { label: 'Usuarios', route: 'users.index', active: 'users.*', count: null, adminOnly: true },
+        ],
+    },
+];
 
 export default function Authenticated({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode; user?: User }>) {
     const user = usePage().props.auth.user;
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const sidebar = (
+        <>
+            <div className="flex h-20 items-center gap-3 border-b border-stone-200 px-6">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-blue-900 text-lg font-semibold text-white">
+                    S
+                </div>
+                <div>
+                    <div className="font-semibold tracking-wide text-slate-950">SIGEVEM</div>
+                    <div className="text-xs text-slate-500">I. Mun. de Puerto Montt</div>
+                </div>
+            </div>
+
+            <nav className="space-y-7 px-4 py-6">
+                {menuSections.map((section) => (
+                    <div key={section.label}>
+                        <div className="mb-2 px-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+                            {section.label}
+                        </div>
+                        <div className="space-y-1">
+                            {section.items
+                                .filter((item) => !item.adminOnly || user.role === 'admin')
+                                .map((item) => {
+                                    const active = route().current(item.active);
+
+                                    return (
+                                        <Link
+                                            key={item.label}
+                                            href={route(item.route)}
+                                            onClick={() => setShowMobileMenu(false)}
+                                            className={`flex items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium ${
+                                                active
+                                                    ? 'bg-blue-100 text-blue-950'
+                                                    : 'text-slate-700 hover:bg-stone-100'
+                                            }`}
+                                        >
+                                            <span>{item.label}</span>
+                                            {item.count && (
+                                                <span className="rounded bg-stone-200 px-2 py-0.5 text-xs text-slate-600">
+                                                    {item.count}
+                                                </span>
+                                            )}
+                                        </Link>
+                                    );
+                                })}
+                        </div>
+                    </div>
+                ))}
+            </nav>
+        </>
+    );
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                </Link>
-                            </div>
+        <div className="sigevem-shell min-h-screen bg-[#f4f2ed] text-slate-900">
+            <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-stone-200 bg-[#fbfaf7] lg:block">
+                {sidebar}
+            </aside>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    href={route('vehicles.index')}
-                                    active={route().current('vehicles.*')}
-                                >
-                                    Vehículos
-                                </NavLink>
-                                <NavLink
-                                    href={route('requests.index')}
-                                    active={route().current('requests.*')}
-                                >
-                                    Solicitudes
-                                </NavLink>
-                                <NavLink
-                                    href={route('maintenances.index')}
-                                    active={route().current('maintenances.*')}
-                                >
-                                    Mantenimiento
-                                </NavLink>
-                                <NavLink
-                                    href={route('documents.index')}
-                                    active={route().current('documents.*')}
-                                >
-                                    Documentos
-                                </NavLink>
-                                <NavLink
-                                    href={route('departments.index')}
-                                    active={route().current('departments.*')}
-                                >
-                                    Departamentos
-                                </NavLink>
-                                {user.role === 'admin' && (
-                                    <NavLink
-                                        href={route('users.index')}
-                                        active={route().current('users.*')}
-                                    >
-                                        Usuarios
-                                    </NavLink>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
-
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </Dropdown.Trigger>
-
-                                    <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route('profile.edit')}
-                                        >
-                                            Profile
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
-                            >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? 'inline-flex'
-                                                : 'hidden'
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+            {showMobileMenu && (
+                <div className="fixed inset-0 z-40 lg:hidden">
+                    <button
+                        type="button"
+                        className="absolute inset-0 bg-slate-950/30"
+                        onClick={() => setShowMobileMenu(false)}
+                        aria-label="Cerrar menu"
+                    />
+                    <aside className="relative h-full w-64 border-r border-stone-200 bg-[#fbfaf7] shadow-xl">
+                        {sidebar}
+                    </aside>
                 </div>
-
-                <div
-                    className={
-                        (showingNavigationDropdown ? 'block' : 'hidden') +
-                        ' sm:hidden'
-                    }
-                >
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('vehicles.index')}
-                            active={route().current('vehicles.*')}
-                        >
-                            Vehículos
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('requests.index')}
-                            active={route().current('requests.*')}
-                        >
-                            Solicitudes
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('maintenances.index')}
-                            active={route().current('maintenances.*')}
-                        >
-                            Mantenimiento
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('documents.index')}
-                            active={route().current('documents.*')}
-                        >
-                            Documentos
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route('departments.index')}
-                            active={route().current('departments.*')}
-                        >
-                            Departamentos
-                        </ResponsiveNavLink>
-                        {user.role === 'admin' && (
-                            <ResponsiveNavLink
-                                href={route('users.index')}
-                                active={route().current('users.*')}
-                            >
-                                Usuarios
-                            </ResponsiveNavLink>
-                        )}
-                    </div>
-
-                    <div className="border-t border-gray-200 pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                {user.name}
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                {user.email}
-                            </div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route('logout')}
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
             )}
 
-            <main>{children}</main>
+            <div className="lg:pl-64">
+                <header className="sticky top-0 z-20 border-b border-stone-200 bg-[#fbfaf7]/95 backdrop-blur">
+                    <div className="flex h-20 items-center justify-between gap-4 px-5 lg:px-6">
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setShowMobileMenu(true)}
+                                className="rounded-md border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 lg:hidden"
+                            >
+                                Menu
+                            </button>
+                            <div className="hidden items-center gap-2 text-sm text-slate-500 md:flex">
+                                <span>Panel</span>
+                                <span>/</span>
+                                <span className="font-semibold text-slate-900">
+                                    {route().current('dashboard') ? 'Inicio' : 'Modulo'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="hidden min-w-0 flex-1 justify-center md:flex">
+                            <div className="flex w-full max-w-xl items-center rounded-md border border-stone-200 bg-white px-4 py-2.5 text-sm text-slate-500 shadow-sm">
+                                <span className="mr-3">Buscar</span>
+                                <span className="truncate">movil, patente, solicitud o funcionario...</span>
+                                <span className="ml-auto rounded border border-stone-200 px-2 py-0.5 text-xs text-slate-400">⌘K</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-sm text-slate-600">
+                            <div className="hidden text-right sm:block">
+                                <div className="font-medium text-slate-900">{user.name}</div>
+                                <div className="text-xs text-slate-500">{user.email}</div>
+                            </div>
+                            <div className="hidden h-6 w-px bg-stone-200 sm:block" />
+                            <Link href={route('profile.edit')} className="hidden rounded-md px-3 py-2 hover:bg-stone-100 sm:block">
+                                Perfil
+                            </Link>
+                            <Link href={route('logout')} method="post" as="button" className="rounded-md px-3 py-2 hover:bg-stone-100">
+                                Salir
+                            </Link>
+                        </div>
+                    </div>
+                </header>
+
+                {header && (
+                    <section className="border-b border-stone-200 bg-white">
+                        <div className="px-5 py-5 lg:px-6">
+                            {header}
+                        </div>
+                    </section>
+                )}
+
+                <main>{children}</main>
+            </div>
         </div>
     );
 }

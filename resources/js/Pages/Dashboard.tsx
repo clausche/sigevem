@@ -100,8 +100,11 @@ export default function Dashboard() {
             <Head title="Panel de control" />
 
             <div className="min-h-screen bg-[#f4f2ed] text-slate-900">
-                <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-stone-200 bg-[#fbfaf7] lg:block">
-                    <div className="flex h-20 items-center gap-3 border-b border-stone-200 px-6">
+                <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-stone-200 bg-[#fbfaf7] lg:block">
+                    <Link
+                        href="/"
+                        className="flex h-20 items-center gap-3 border-b border-stone-200 px-6 hover:bg-stone-100"
+                    >
                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-blue-900 text-lg font-semibold text-white">
                             S
                         </div>
@@ -109,7 +112,7 @@ export default function Dashboard() {
                             <div className="font-semibold tracking-wide">SIGEVEM</div>
                             <div className="text-xs text-slate-500">I. Mun. de Puerto Montt</div>
                         </div>
-                    </div>
+                    </Link>
 
                     <nav className="space-y-7 px-4 py-6">
                         {menuSections.map((section) => (
@@ -144,9 +147,9 @@ export default function Dashboard() {
                     </nav>
                 </aside>
 
-                <div className="lg:pl-72">
+                <div className="lg:pl-64">
                     <header className="sticky top-0 z-20 border-b border-stone-200 bg-[#fbfaf7]/95 backdrop-blur">
-                        <div className="flex h-20 items-center justify-between gap-4 px-5 lg:px-9">
+                        <div className="flex h-20 items-center justify-between gap-4 px-5 lg:px-6">
                             <div className="hidden items-center gap-2 text-sm text-slate-500 md:flex">
                                 <span>Panel</span>
                                 <span>/</span>
@@ -172,7 +175,7 @@ export default function Dashboard() {
                         </div>
                     </header>
 
-                    <main className="px-5 py-8 lg:px-9">
+                    <main className="px-5 py-8 lg:px-6">
                         <div className="mb-7 flex flex-col justify-between gap-5 xl:flex-row xl:items-end">
                             <div>
                                 <div className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
@@ -189,9 +192,12 @@ export default function Dashboard() {
                             </div>
 
                             <div className="flex flex-wrap gap-3">
-                                <button className="rounded-md border border-stone-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-stone-50">
+                                <a
+                                    href={route('dashboard.export-summary')}
+                                    className="rounded-md border border-stone-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-stone-50"
+                                >
                                     Exportar resumen
-                                </button>
+                                </a>
                                 <Link
                                     href={route('requests.create')}
                                     className="rounded-md bg-blue-900 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-950"

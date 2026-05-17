@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class VehicleRequest extends Model
 {
+    protected $table = 'requests';
+
     protected $fillable = ['user_id', 'department_id', 'reason', 'destination', 'start_date', 'end_date', 'status', 'granted_by'];
 
     protected function casts(): array

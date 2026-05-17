@@ -26,7 +26,14 @@ interface Vehicle {
 interface PageProps extends AppPageProps {
     vehicles: {
         data: Vehicle[];
-        links: any;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
+        from: number | null;
+        to: number | null;
+        total: number;
     };
     flash: {
         message: string | null;
@@ -104,6 +111,42 @@ export default function Index() {
                                 ))}
                             </tbody>
                         </table>
+
+                        <div className="mt-6 flex flex-col gap-4 border-t border-gray-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="text-sm text-gray-500">
+                                {vehicles.total > 0 ? (
+                                    <>
+                                        Mostrando {vehicles.from} a {vehicles.to} de {vehicles.total} vehiculos
+                                    </>
+                                ) : (
+                                    'No hay vehiculos registrados'
+                                )}
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-2">
+                                {vehicles.links.map((link) => (
+                                    link.url ? (
+                                        <Link
+                                            key={link.label}
+                                            href={link.url}
+                                            preserveScroll
+                                            className={`rounded-md border px-3 py-2 text-sm font-medium ${
+                                                link.active
+                                                    ? 'border-indigo-600 bg-indigo-600 text-white'
+                                                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                                            }`}
+                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                        />
+                                    ) : (
+                                        <span
+                                            key={link.label}
+                                            className="rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-sm font-medium text-gray-400"
+                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                        />
+                                    )
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
