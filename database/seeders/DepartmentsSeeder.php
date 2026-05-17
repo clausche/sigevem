@@ -10,7 +10,7 @@ class DepartmentsSeeder extends Seeder
 {
     public function run(): void
     {
-        $path = storage_path('app/public/organigrama_municipalidad_puerto_montt_106_unidades.csv');
+        $path = database_path('data/organigrama_municipalidad_puerto_montt_106_unidades.csv');
 
         if (! file_exists($path)) {
             throw new RuntimeException("No se encontro el archivo de unidades municipales: {$path}");

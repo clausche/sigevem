@@ -7,6 +7,7 @@ use App\Http\Controllers\VehicleRequestController;
 use App\Http\Controllers\TripLogController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleDocumentController;
@@ -41,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('assignments', [AssignmentController::class, 'index'])->name('assignments.index');
     Route::resource('maintenances', MaintenanceController::class);
     Route::resource('documents', VehicleDocumentController::class);
+
+    Route::middleware('admin')->group(function () {
+        Route::resource('users', UserController::class)->only(['index', 'edit', 'update']);
+    });
 });
 
 require __DIR__.'/auth.php';

@@ -1,0 +1,106 @@
+﻿id,nombre,tipo_unidad,parent_id,nivel,orden,activa
+1,Alcalde,autoridad,,0,1,1
+3,Concejo Municipal,concejo,1,1,1,1
+4,Consejo de Seguridad Pública,consejo,1,1,2,1
+5,Consejo de Organizaciones de la Sociedad Civil,consejo,1,1,3,1
+6,Juzgado de Policía Local,juzgado,1,1,4,1
+7,Administrador Municipal,administración municipal,1,1,5,1
+8,Gabinete Alcaldía,gabinete,1,1,6,1
+9,Oficina Relaciones Públicas,oficina,8,3,1,1
+10,Delegados Municipales,delegación,8,3,2,1
+11,Dpto. Licitaciones y Gestión Abastec.,departamento,7,3,1,1
+12,OIRS - Transparencia,unidad,7,3,2,1
+13,Secretaría Municipal,dirección,1,1,1,1
+17,SECPLAN,dirección,1,1,2,1
+25,Dirección de Administración y Finanzas,dirección,1,1,3,1
+37,Dirección Jurídica,dirección,1,1,4,1
+41,Dirección de Control,dirección,1,1,5,1
+44,Dirección de Obras Municipales,dirección,1,1,6,1
+51,Dirección de Tránsito,dirección,1,1,7,1
+59,"Dirección de Medio Ambiente, Aseo y Ornato",dirección,1,1,8,1
+63,Dirección de Desarrollo Comunitario,dirección,1,1,9,1
+81,Dirección Servicios Traspasados,dirección,1,1,10,1
+85,Dirección de Concesiones,dirección,1,1,11,1
+87,Dirección de Operaciones,dirección,1,1,12,1
+95,Dirección de Turismo,dirección,1,1,13,1
+101,Dirección de Seguridad Pública,dirección,1,1,14,1
+14,Oficina Concejo y Concejales,oficina,13,3,1,1
+15,Sección Partes y Archivos,sección,13,3,2,1
+16,Sección Servicios Generales,sección,13,3,3,1
+18,Dpto. Coordinación,departamento,17,3,1,1
+19,Dpto. de Proyectos,departamento,17,3,2,1
+20,Dpto. Estudios y Presupuesto,departamento,17,3,3,1
+21,Dpto. de Informática,departamento,17,3,4,1
+22,Dpto. de Vivienda,departamento,17,3,5,1
+23,Dpto. Desarrollo Urbano,departamento,17,3,6,1
+24,Dpto. Gestión Información Territorial,departamento,17,3,7,1
+26,Subdirección Finanzas,subdirección,25,3,1,1
+27,Dpto. Administración de Bienes,departamento,26,4,1,1
+28,Dpto. Contabilidad y Presupuesto,departamento,26,4,2,1
+29,Dpto. de Tesorería,departamento,26,4,3,1
+30,Subdirección Rentas Municipales,subdirección,25,3,2,1
+31,Dpto. de Rentas y Patentes,departamento,30,4,1,1
+32,Dpto. de Fiscalización y Cobranza,departamento,30,4,2,1
+33,Subdirección Personal,subdirección,25,3,3,1
+34,Dpto. de Personal,departamento,33,4,1,1
+35,Dpto. Prevención de Riesgos,departamento,33,4,2,1
+36,Dpto. de Bienestar,departamento,33,4,3,1
+38,Dpto. Judicial,departamento,37,3,1,1
+39,Dpto. de Bienes,departamento,37,3,2,1
+40,Dpto. Administrativo,departamento,37,3,3,1
+42,Dpto. Auditoría Operativa y Control de Gestión,departamento,41,3,1,1
+43,Dpto. Análisis y Revisión,departamento,41,3,2,1
+45,Subdirección Técnica,subdirección,44,3,1,1
+46,Dpto. de Permisos,departamento,45,4,1,1
+47,Dpto. de Inspección,departamento,45,4,2,1
+48,Subdirección de Inspección de Obras,subdirección,44,3,2,1
+49,Dpto. de Coordinación,departamento,48,4,1,1
+50,Dpto. Inspección Técnica de Obras,departamento,48,4,2,1
+52,Subdirección Administrativa de Tránsito,subdirección,51,3,1,1
+53,Dpto. Permisos de Circulación,departamento,52,4,1,1
+54,Dpto. Licencias de Conducir,departamento,52,4,2,1
+55,Dpto. Administrativo,departamento,52,4,3,1
+56,Subdirección de Estudios e Ingeniería Tránsito,subdirección,51,3,2,1
+57,Dpto. de Señalización e Inspección,departamento,56,4,1,1
+58,Dpto. Ingeniería del Tránsito y Proyectos,departamento,56,4,2,1
+60,Dpto. de Aseo,departamento,59,3,1,1
+61,Dpto. de Ornato,departamento,59,3,2,1
+62,Dpto. de Estudios de Medio Ambiente,departamento,59,3,3,1
+64,Dpto. Difusión y Comunicaciones,departamento,63,3,1,1
+65,Dpto. Planificación y Gestión,departamento,63,3,2,1
+66,Dpto. Administrativo,departamento,63,3,3,1
+67,Subdirección de Protección Social,subdirección,63,3,4,1
+68,Dpto. Protección y Defensa Ciudadana,departamento,67,4,1,1
+69,Dpto. Social,departamento,67,4,2,1
+70,Dpto. RSH,departamento,67,4,3,1
+71,Dpto. Programas Protección Social,departamento,67,4,4,1
+72,Dpto. Integral Personas Mayores,departamento,67,4,5,1
+73,Subdirección de Org. Comunitarias,subdirección,63,3,5,1
+74,Dpto. Organiz. Comunitarias,departamento,73,4,1,1
+75,Dpto. Deportes y Recreación,departamento,73,4,2,1
+76,Dpto. Inclusión Social,departamento,73,4,3,1
+77,Subdirección de Desarrollo Económico Local,subdirección,63,3,6,1
+78,Dpto. Fomento Productivo,departamento,77,4,1,1
+79,Dpto. Mujer y Equidad Género,departamento,77,4,2,1
+80,"Dpto. Empleo, Innov. Fin. y Capac.",departamento,77,4,3,1
+82,Dpto. de Salud Municipal,departamento,81,3,1,1
+83,Dpto. de Administración de Educación Municipal,departamento,81,3,2,1
+84,Cementerios Municipales,departamento,81,3,3,1
+86,Dpto. de Fiscalización de Concesiones,departamento,85,3,1,1
+88,Dpto. Administración y Control Gestión,departamento,87,3,1,1
+89,Dpto. Técnico,departamento,87,3,2,1
+90,Dpto. de Operaciones,departamento,87,3,3,1
+91,Dpto. de Calles y Caminos,departamento,87,3,4,1
+92,Dpto. de Obras Menores,departamento,87,3,5,1
+93,Dpto. de Mantenimiento,departamento,87,3,6,1
+94,Dpto. Eléctrico,departamento,87,3,7,1
+96,Dpto. de Administración,departamento,95,3,1,1
+97,Dpto. de Planificación,departamento,95,3,2,1
+98,Dpto. Fomento Turístico,departamento,95,3,3,1
+99,Dpto. de Cultura,departamento,95,3,4,1
+100,Dpto. Innovación y Marketing Turístico,departamento,95,3,5,1
+102,Dpto. de Planificación y Control Gestión,departamento,101,3,1,1
+103,Dpto. Administrativo,departamento,101,3,2,1
+104,Dpto. Seguridad Pública,departamento,101,3,3,1
+105,Dpto. Estudios y Prevención Social,departamento,101,3,4,1
+106,Dpto. Difusión y Comunicaciones,departamento,101,3,5,1
